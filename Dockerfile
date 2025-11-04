@@ -1,9 +1,21 @@
-FROM node
+# Use official Node.js LTS image
+FROM node:18
+
+# Set working directory
 WORKDIR /app
 
-COPY . .
-EXPOSE 3000
-
+# Copy package.json first (for caching)
 COPY package*.json ./
 
-ENTRYPOINT start npm
+# Install dependencies
+RUN npm install
+
+# Copy rest of the app
+COPY . .
+
+# Expose the port your app runs on
+EXPOSE 3000
+
+# Start the app
+CMD ["npm", "start"]
+
